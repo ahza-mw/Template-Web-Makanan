@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEGAR — Makanan & Minuman Segar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F9F6F0;
+    --warm: #F0EBE0;
+    --brown: #3B2E1E;
+    --brown-mid: #6B5240;
+    --brown-light: #C4A882;
+    --accent: #D4622A;
+    --accent-light: #F5D9C8;
+    --green: #3D6B3F;
+    --green-light: #E6F0E6;
+    --text: #1E1710;
+    --muted: #8A7A6A;
+    --border: #E5DDD0;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(249,246,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--brown);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--brown-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 20px;
+  }
+
+  .cart-btn {
+    background: var(--brown);
+    color: var(--cream);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.1s;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .cart-btn:hover { background: var(--accent); }
+  .cart-btn:active { transform: scale(0.97); }
+
+  .cart-count {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .hero-left {
+    padding: 80px 5% 80px 8%;
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-light);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.1;
+    color: var(--brown);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 420px;
+    margin-bottom: 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #bf5523; transform: translateY(-1px); }
+
+  .btn-outline {
+    color: var(--brown);
+    border: 1.5px solid var(--brown-light);
+    background: transparent;
+    padding: 13px 28px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { border-color: var(--brown); background: var(--warm); }
+
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 56px;
+  }
+
+  .stat-item { text-align: left; }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--brown);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .hero-right {
+    height: 100vh;
+    background: var(--warm);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    padding: 32px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .hero-card:hover img { transform: scale(1.04); }
+
+  .hero-card-label {
+    position: absolute; bottom: 12px; left: 12px;
+    background: rgba(249,246,240,0.9);
+    backdrop-filter: blur(4px);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--brown);
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--brown);
+    padding: 14px 0;
+    overflow: hidden;
+  }
+
+  .marquee-inner {
+    display: flex;
+    gap: 40px;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+
+  .marquee-item {
+    display: flex; align-items: center; gap: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brown-light);
+  }
+
+  .marquee-dot {
+    width: 5px; height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTION */
+  section { padding: 80px 8%; }
+
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 48px;
+  }
+
+  .section-tag {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 3vw, 40px);
+    color: var(--brown);
+    line-height: 1.2;
+  }
+
+  .see-all {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brown-mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .see-all:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* CATEGORIES */
+  #kategori { background: var(--white); }
+
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .cat-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .cat-card:hover {
+    background: var(--brown);
+    border-color: var(--brown);
+    transform: translateY(-3px);
+  }
+
+  .cat-card:hover .cat-icon { background: rgba(255,255,255,0.15); }
+  .cat-card:hover .cat-name { color: white; }
+  .cat-card:hover .cat-count { color: var(--brown-light); }
+
+  .cat-icon {
+    width: 60px; height: 60px;
+    background: var(--warm);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 24px;
+    transition: background 0.25s;
+  }
+
+  .cat-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brown);
+    margin-bottom: 4px;
+    transition: color 0.25s;
+  }
+
+  .cat-count {
+    font-size: 12px;
+    color: var(--muted);
+    transition: color 0.25s;
+  }
+
+  /* PRODUCTS */
+  .prod-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .prod-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+  }
+
+  .prod-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(59,46,30,0.1);
+  }
+
+  .prod-img {
+    height: 220px;
+    background: var(--warm);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+  }
+
+  .prod-badge {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+  }
+
+  .prod-badge.new {
+    background: var(--green);
+  }
+
+  .prod-fav {
+    position: absolute; top: 14px; right: 14px;
+    width: 34px; height: 34px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: none;
+  }
+
+  .prod-fav:hover { transform: scale(1.15); }
+
+  .prod-info {
+    padding: 18px 20px 20px;
+  }
+
+  .prod-cat {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .prod-name {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--brown);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .prod-desc {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .prod-footer {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .prod-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--brown);
+  }
+
+  .prod-price span {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    text-decoration: line-through;
+    margin-left: 6px;
+  }
+
+  .add-btn {
+    background: var(--brown);
+    color: white;
+    border: none;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    line-height: 1;
+  }
+
+  .add-btn:hover { background: var(--accent); }
+  .add-btn:active { transform: scale(0.92); }
+
+  /* PROMO BANNER */
+  .promo-section {
+    padding: 0 8% 80px;
+  }
+
+  .promo-banner {
+    background: var(--brown);
+    border-radius: 24px;
+    padding: 56px 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promo-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: 200px;
+    width: 300px; height: 300px;
+    background: var(--accent);
+    opacity: 0.12;
+    border-radius: 50%;
+  }
+
+  .promo-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: 80px;
+    width: 200px; height: 200px;
+    background: var(--brown-light);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+
+  .promo-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .promo-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .promo-sub {
+    font-size: 15px;
+    color: var(--brown-light);
+    font-weight: 300;
+  }
+
+  .promo-right {
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+
+  .promo-code {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px dashed rgba(255,255,255,0.25);
+    border-radius: 12px;
+    padding: 20px 32px;
+    margin-bottom: 16px;
+  }
+
+  .promo-code-label {
+    font-size: 11px;
+    color: var(--brown-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .promo-code-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: white;
+    letter-spacing: 4px;
+  }
+
+  .promo-disc {
+    font-size: 13px;
+    color: var(--brown-light);
+    font-weight: 300;
+  }
+
+  /* TESTIMONIALS */
+  #ulasan { background: var(--white); }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .testi-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .testi-stars {
+    color: #F5A623;
+    font-size: 16px;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+
+  .testi-text {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--brown-mid);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .testi-author {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--warm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--brown);
+    font-family: 'DM Serif Display', serif;
+    flex-shrink: 0;
+  }
+
+  .testi-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brown);
+  }
+
+  .testi-loc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--brown);
+    color: white;
+    padding: 60px 8% 32px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+
+  .footer-desc {
+    font-size: 14px;
+    color: var(--brown-light);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .footer-socials {
+    display: flex; gap: 12px;
+  }
+
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(196,168,130,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--brown-light);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .social-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul li a {
+    font-size: 14px;
+    color: var(--brown-light);
+    text-decoration: none;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover { color: white; }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(196,168,130,0.2);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--brown-light);
+    font-weight: 300;
+  }
+
+  .footer-pay {
+    display: flex; gap: 10px; align-items: center;
+  }
+
+  .pay-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--brown-light);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--brown);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 999;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .prod-grid { grid-template-columns: repeat(2, 1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+    .promo-banner { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .prod-grid { grid-template-columns: 1fr; }
+    section { padding: 60px 5%; }
+    .promo-section { padding: 0 5% 60px; }
+    .promo-banner { padding: 40px 28px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="logo">SEGAR</a>
+  <ul class="nav-links">
+    <li><a href="#kategori">Kategori</a></li>
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#ulasan">Ulasan</a></li>
+    <li><a href="#kontak">Kontak</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="viewCart()">
+      🛒 Keranjang
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Pengiriman Hari Ini Tersedia</div>
+    <h1>Rasa <em>Segar</em><br>Langsung ke<br>Pintu Anda</h1>
+    <p class="hero-desc">Makanan dan minuman pilihan dari bahan-bahan terbaik, diolah dengan cinta, dikirim cepat ke seluruh kota.</p>
+    <div class="hero-actions">
+      <a href="#produk" class="btn-primary">Belanja Sekarang</a>
+      <a href="#kategori" class="btn-outline">Lihat Kategori</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">200+</span>
+        <span class="stat-label">Produk Tersedia</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4.9★</span>
+        <span class="stat-label">Rating Pelanggan</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">2rb+</span>
+        <span class="stat-label">Pelanggan Setia</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-grid">
+      <div class="hero-card" style="grid-row: span 2;">
+        <div style="height:100%; background:linear-gradient(145deg,#f0e8d0,#e8d5b0); display:flex;align-items:center;justify-content:center;font-size:80px;">🥗</div>
+        <div class="hero-card-label">Salad Segar</div>
+      </div>
+      <div class="hero-card">
+        <div style="height:180px; background:linear-gradient(145deg,#fde8d0,#fcc89a); display:flex;align-items:center;justify-content:center;font-size:60px;">🥤</div>
+        <div class="hero-card-label">Smoothie Bowl</div>
+      </div>
+      <div class="hero-card">
+        <div style="height:180px; background:linear-gradient(145deg,#d0eae0,#a8d5be); display:flex;align-items:center;justify-content:center;font-size:60px;">🍱</div>
+        <div class="hero-card-label">Bento Box</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span class="marquee-item"><span class="marquee-dot"></span>Pengiriman Cepat</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bahan Premium</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>100% Halal</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Tanpa Pengawet</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Higienis Terjamin</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Packaging Eco-Friendly</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Pengiriman Cepat</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Bahan Premium</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>100% Halal</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Tanpa Pengawet</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Higienis Terjamin</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Packaging Eco-Friendly</span>
+  </div>
+</div>
+
+<!-- KATEGORI -->
+<section id="kategori">
+  <div class="section-header">
+    <div>
+      <span class="section-tag">Temukan Pilihan</span>
+      <h2 class="section-title">Kategori Produk</h2>
+    </div>
+    <a href="#produk" class="see-all">Lihat Semua →</a>
+  </div>
+  <div class="cat-grid">
+    <a href="#produk" class="cat-card">
+      <div class="cat-icon">🥗</div>
+      <div class="cat-name">Makanan Sehat</div>
+      <div class="cat-count">48 produk</div>
+    </a>
+    <a href="#produk" class="cat-card">
+      <div class="cat-icon">🥤</div>
+      <div class="cat-name">Minuman Segar</div>
+      <div class="cat-count">36 produk</div>
+    </a>
+    <a href="#produk" class="cat-card">
+      <div class="cat-icon">🍰</div>
+      <div class="cat-name">Snack & Dessert</div>
+      <div class="cat-count">62 produk</div>
+    </a>
+    <a href="#produk" class="cat-card">
+      <div class="cat-icon">🛒</div>
+      <div class="cat-name">Paket Bundling</div>
+      <div class="cat-count">24 paket</div>
+    </a>
+  </div>
+</section>
+
+<!-- PRODUK -->
+<section id="produk" style="background: var(--cream);">
+  <div class="section-header">
+    <div>
+      <span class="section-tag">Terlaris Minggu Ini</span>
+      <h2 class="section-title">Produk Unggulan</h2>
+    </div>
+    <a href="#" class="see-all">Semua Produk →</a>
+  </div>
+  <div class="prod-grid">
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🥗
+        <div class="prod-badge new">Baru</div>
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Makanan Sehat</div>
+        <div class="prod-name">Salad Bowl Buah Naga</div>
+        <div class="prod-desc">Campuran sayuran segar, buah naga, alpukat, dan dressing lemon madu.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 38.000 <span>Rp 45.000</span></div>
+          <button class="add-btn" onclick="addToCart('Salad Bowl Buah Naga', 38000)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🥤
+        <div class="prod-badge">Promo</div>
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Minuman Segar</div>
+        <div class="prod-name">Green Smoothie Detox</div>
+        <div class="prod-desc">Spinach, pisang, jahe, lemon, dan madu — segar dan menyehatkan.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 28.000 <span>Rp 32.000</span></div>
+          <button class="add-btn" onclick="addToCart('Green Smoothie Detox', 28000)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🍱
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Makanan Sehat</div>
+        <div class="prod-name">Bento Nasi Merah Ayam</div>
+        <div class="prod-desc">Nasi merah bergizi, ayam panggang rendah lemak, tumis brokoli.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 52.000</div>
+          <button class="add-btn" onclick="addToCart('Bento Nasi Merah Ayam', 52000)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🍰
+        <div class="prod-badge new">Baru</div>
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Dessert</div>
+        <div class="prod-name">Overnight Oat Matcha</div>
+        <div class="prod-desc">Oat dingin dengan matcha premium, granola, chia seed, dan madu tetes.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 35.000 <span>Rp 42.000</span></div>
+          <button class="add-btn" onclick="addToCart('Overnight Oat Matcha', 35000)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🧃
+        <div class="prod-badge">Promo</div>
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Minuman Segar</div>
+        <div class="prod-name">Cold Press Jeruk Wortel</div>
+        <div class="prod-desc">Jus cold-press murni tanpa gula tambahan, kaya vitamin C dan beta karoten.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 22.000 <span>Rp 28.000</span></div>
+          <button class="add-btn" onclick="addToCart('Cold Press Jeruk Wortel', 22000)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img">
+        🛒
+        <button class="prod-fav" onclick="toggleFav(this)">🤍</button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">Paket Bundling</div>
+        <div class="prod-name">Paket Sehat 3-Hari</div>
+        <div class="prod-desc">9 menu pilihan untuk sarapan, makan siang, dan camilan selama 3 hari.</div>
+        <div class="prod-footer">
+          <div class="prod-price">Rp 285.000 <span>Rp 360.000</span></div>
+          <button class="add-btn" onclick="addToCart('Paket Sehat 3-Hari', 285000)">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="promo-section">
+  <div class="promo-banner">
+    <div>
+      <span class="promo-tag">Penawaran Terbatas</span>
+      <h2 class="promo-title">Diskon 20% untuk<br>Order Pertama Anda</h2>
+      <p class="promo-sub">Berlaku untuk semua kategori · Minimal belanja Rp 75.000</p>
+    </div>
+    <div class="promo-right">
+      <div class="promo-code">
+        <div class="promo-code-label">Kode Promo</div>
+        <div class="promo-code-val">SEGAR20</div>
+      </div>
+      <p class="promo-disc">Hemat hingga Rp 50.000</p>
+    </div>
+  </div>
+</div>
+
+<!-- ULASAN -->
+<section id="ulasan">
+  <div class="section-header">
+    <div>
+      <span class="section-tag">Kata Mereka</span>
+      <h2 class="section-title">Ulasan Pelanggan</h2>
+    </div>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Beneran segar banget! Salad bowl-nya jadi langganan setiap minggu. Packaging-nya juga rapi dan tidak bocor."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Ayu Rahmawati</div>
+          <div class="testi-loc">Purwakarta, Jabar</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Paket 3-hari sangat membantu program diet saya. Rasanya enak, tidak terasa seperti makanan diet biasanya."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Rizky Fauzan</div>
+          <div class="testi-loc">Bandung, Jabar</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Green smoothie detox-nya enak banget! Anakku yang susah makan sayur jadi doyan. Terima kasih SEGAR!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">D</div>
+        <div>
+          <div class="testi-name">Dewi Susanti</div>
+          <div class="testi-loc">Subang, Jabar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="kontak">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">SEGAR</div>
+      <p class="footer-desc">Makanan dan minuman segar berkualitas premium, diantarkan langsung ke rumah Anda dengan cinta dan kehigienisan terjamin.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn">ig</a>
+        <a href="#" class="social-btn">wa</a>
+        <a href="#" class="social-btn">tt</a>
+        <a href="#" class="social-btn">fb</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Produk</h4>
+      <ul>
+        <li><a href="#">Makanan Sehat</a></li>
+        <li><a href="#">Minuman Segar</a></li>
+        <li><a href="#">Snack & Dessert</a></li>
+        <li><a href="#">Paket Bundling</a></li>
+        <li><a href="#">Promo Hari Ini</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Layanan</h4>
+      <ul>
+        <li><a href="#">Cara Pemesanan</a></li>
+        <li><a href="#">Pengiriman</a></li>
+        <li><a href="#">Kebijakan Retur</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Hubungi Kami</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <ul>
+        <li><a href="#">📍 Purwakarta, Jabar</a></li>
+        <li><a href="#">📞 0812-3456-7890</a></li>
+        <li><a href="#">✉️ halo@segar.id</a></li>
+        <li><a href="#">🕐 Sen–Sab, 07–21 WIB</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 SEGAR. Semua hak dilindungi.</p>
+    <div class="footer-pay">
+      <span class="pay-badge">GoPay</span>
+      <span class="pay-badge">OVO</span>
+      <span class="pay-badge">DANA</span>
+      <span class="pay-badge">BCA</span>
+      <span class="pay-badge">COD</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  let cartCount = 0;
+
+  function addToCart(name, price) {
+    cartCount++;
+    document.getElementById('cartCount').textContent = cartCount;
+    showToast('✓ ' + name + ' ditambahkan ke keranjang');
+  }
+
+  function viewCart() {
+    if (cartCount === 0) {
+      showToast('Keranjang masih kosong');
+    } else {
+      showToast('Keranjang: ' + cartCount + ' item');
+    }
+  }
+
+  function toggleFav(btn) {
+    if (btn.textContent === '🤍') {
+      btn.textContent = '❤️';
+      showToast('Ditambahkan ke wishlist');
+    } else {
+      btn.textContent = '🤍';
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>
