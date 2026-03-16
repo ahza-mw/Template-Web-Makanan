@@ -1,5 +1,7 @@
 # Template-Web-Makanan
 Template web yang bisa diedit
+Jika bingung maka copas dibawah ini ke Chatgpt
+
 Berikut panduan lengkap semua bagian yang bisa diedit di file template-toko.html:
 
 1. Identitas Toko
